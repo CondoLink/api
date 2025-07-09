@@ -19,14 +19,14 @@ interface User {
     fullName: string;
     email: string;
     password: string;
-    buildingId: number;
-    blockId: number;
+    buildingId: number | null;
+    blockId: number | null;
     roleCode: number;
-    companyName: string;
-    phone: string;
-    approvedBy: number;
-    unit: string;
-    refreshToken: string
+    companyName: string | null;
+    phone: string | null;
+    approvedBy: number | null;
+    unit: string | null;
+    refreshToken: string | null;
 }
 
 //a POST request to login user.
@@ -53,7 +53,7 @@ router.post('/', async (req: Request, res: Response) => {
         res.status(401).json({ message: 'Unauthorized access. Your user needs to be approved by your building' });
         return;
     }
-    
+
     //if user name found then compare the password 
     const match = await bcrypt.compare(password, user.password);
 
@@ -77,7 +77,7 @@ router.post('/', async (req: Request, res: Response) => {
                 phone: user.phone,
                 accessToken
             };
-            
+
             // Why use cookies to send the refresh token?
             // Storing the refresh token in an httpOnly cookie protects it from being accessed or manipulated by JavaScript in the browser, 
             // mitigating risks such as cross-site scripting (XSS) attacks. It also allows automatic inclusion in requests to the backend 
@@ -131,7 +131,7 @@ router.get('/refresh', async (req: Request, res: Response) => {
             return;
         }
 
-        
+
 
         // Generate new tokens
         const { accessToken, refreshToken: newRefreshToken } = await generateAuthTokens(user.email, user.id, user.roleCode);
