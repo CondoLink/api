@@ -11,7 +11,7 @@ const { logger } = require("./middlewares/logEvents");
 const errorHandler = require("./middlewares/errorHandler");
 const verifyJWT = require("./middlewares/verifyJWT");
 const verifyRoles = require("./middlewares/verifyRoles");
-const ROLES_LIST = require("./config/roles_list");
+import { ROLES_LIST } from './config/roles_list';
 
 const app = express();
 

@@ -30,13 +30,13 @@ interface User {
 }
 
 //a POST request to login user.
-router.post('/', async (req: Request<{}, {}, Login>, res: Response): Promise<void> => {
+router.post('/', async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
     //check if they existe
     if (!email || !password) {
-        return res.status(400)
-            .json({ message: 'Email and password are required.' });
+        res.status(400).json({ message: 'Email and password are required.' });
+        return;
     }
 
     //get user information
@@ -44,14 +44,14 @@ router.post('/', async (req: Request<{}, {}, Login>, res: Response): Promise<voi
 
     //if user doesnt exist
     if (!user) {
-        return res.status(401)
-            .json({ message: 'Invalid username or email.' });
+        res.status(401).json({ message: 'Invalid username or email.' });
+        return;
     }
 
     //check if approved by admin
     if (!user?.approvedBy && user.roleCode != 3 && user.roleCode != 2) {
-        return res.status(401)
-            .json({ message: 'Unauthorized access. Your user needs to be approved by your building' });
+        res.status(401).json({ message: 'Unauthorized access. Your user needs to be approved by your building' });
+        return;
     }
     
     //if user name found then compare the password 
@@ -84,7 +84,7 @@ router.post('/', async (req: Request<{}, {}, Login>, res: Response): Promise<voi
             // for token refresh operations without exposing it to the client-side code.
             res.cookie('jwt', refreshToken, {
                 httpOnly: true,       // Cookie not accessible via JavaScript (protects against XSS attacks)
-                sameSite: 'None',     // Allow the cookie to be sent with cross-site requests (necessary for frontend and backend on different origins)
+                sameSite: 'none',     // Allow the cookie to be sent with cross-site requests (necessary for frontend and backend on different origins)
                 secure: true,         // Send cookie only over HTTPS connections (important for security in production)
                 // sameSite: 'Strict', // Alternative: restrict cookie to same-site requests only (more secure, but may break cross-origin use cases)
                 // secure: false,      // For local development without HTTPS (only use when testing locally)
@@ -104,29 +104,31 @@ router.post('/', async (req: Request<{}, {}, Login>, res: Response): Promise<voi
 
 
 //a GET request to refresh access to login user.
-router.get('/refresh', async (req: Request, res: Response): Promise<void> => {
+router.get('/refresh', async (req: Request, res: Response) => {
     const cookies = req.cookies;
 
     if (!cookies?.jwt) {
-        return res.status(401).json({ message: 'Refresh token missing' });
+        res.status(401).json({ message: 'Refresh token missing' });
+        return;
     }
 
     const refreshToken = cookies.jwt; //access cookie sent as 'jwt' on login.
 
     try {
         // Verify refresh token
-        const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET as string) as jwt.JwtPayload;
+        const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET as string);
 
         // Find user by ID from decoded token
         const user: User | null = await findUserByEmail(decoded.UserInfo.email);
         if (!user) {
-            return res.status(403).json({ message: 'User not found' });
+            res.status(403).json({ message: 'User not found' });
+            return;
         }
 
         // Check if refresh token matches the one in DB
         if (user.refreshToken !== refreshToken) {
-           
-            return res.status(403).json({ message: 'Invalid refresh token' });
+            res.status(403).json({ message: 'Invalid refresh token' });
+            return;
         }
 
         
@@ -140,7 +142,7 @@ router.get('/refresh', async (req: Request, res: Response): Promise<void> => {
         // Set new refresh token in cookie
         res.cookie('jwt', newRefreshToken, {
             httpOnly: true,
-            sameSite: 'None',
+            sameSite: 'none',
             secure: true,
             maxAge: 24 * 60 * 60 * 1000 // 1 day
         });

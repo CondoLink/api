@@ -1,7 +1,7 @@
 const { PrismaClient } = require('../generated/prisma');
 const prisma = new PrismaClient();
 
-const findUsers = async (buildingId: number) => {
+export const findUsers = async (buildingId: number) => {
   const result = await prisma.user.findMany({
     where: {
       buildingId: buildingId,
@@ -26,7 +26,7 @@ const findUsers = async (buildingId: number) => {
 
 //--------------------------------------------------------------------------------------
 
-const findBuildings = async (buildingId: number) => {
+export const findBuildings = async (buildingId: number) => {
   const result = await prisma.buildings.findMany({
     where: { id: buildingId },
     select: {
@@ -41,7 +41,7 @@ const findBuildings = async (buildingId: number) => {
 
 //--------------------------------------------------------------------------------------
 
-const findBlocks = async (buildingId: number) => {
+export const findBlocks = async (buildingId: number) => {
   const result = await prisma.blocks.findMany({
     where: { building_id: buildingId },
     select: {
@@ -55,28 +55,17 @@ const findBlocks = async (buildingId: number) => {
 
 //--------------------------------------------------------------------------------------
 
-const getMaintenance = async () => {
+export const getMaintenance = async (buildingId: number) => {
   const result = await prisma.maintenance.findMany();
   return result;
 };
 
 //--------------------------------------------------------------------------------------
-interface Service {
-  id: number;
-  name: string;
-}
 
-const getServices = async (): Promise<Service> => {
+export const getServices = async () => {
   const result = await prisma.ServiceCategory.findMany();
   return result;
 };
 
 //--------------------------------------------------------------------------------------
 
-module.exports = {
-  findUsers,
-  findBuildings,
-  findBlocks,
-  getServices,
-  getMaintenance
-};

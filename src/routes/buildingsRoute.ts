@@ -9,12 +9,12 @@ router.get("/", async (_req: Request, res: Response) => {
 
         const { buildings, blocks } = await getBuildingsAndBlocks();
         res.json({ buildings, blocks });
+        return;
 
     } catch (err: any) {
-
         console.error(err);
         res.status(500).json({ message: 'Failed to fetch buildings and blocks' });
-    
+        return;
     }
 
 });

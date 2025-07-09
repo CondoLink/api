@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 
 //--------------------------------------------------------------------------------------
 
-const approveUser = async (userId: number, approvedBy: number) => {
+export async function approveUser(userId: number, approvedBy: number) {
   const result = await prisma.user.update({
     where: { id: userId },
     data: {
@@ -26,7 +26,7 @@ interface NewSubcontractor {
   serviceType: number;
 }
 
-const addSub = async (newSub: NewSubcontractor): Promise<Resident> => {
+export async function addSub(newSub: NewSubcontractor): Promise<Resident> {
   const created = await prisma.User.create({
     data: {
       fullName: newSub.fullName,
@@ -158,14 +158,3 @@ export async function updateUser(id: number, data: UserUpdateInput) {
 
   return updated;
 }
-
-module.exports = {
-  approveUser,
-  addSub,
-  addMaintenance,
-  updateMaintenance,
-  deleteMaintenance,
-  updateSubcontractor,
-  deleteUser,
-  updateUser
-};

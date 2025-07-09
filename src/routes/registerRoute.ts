@@ -28,16 +28,18 @@ router.post("/user", async (
   // check for missing fields
   const missingFields = await handleMissingFields(newResident);
   if (missingFields.length > 0) {
-      return res.status(400).json({
+      res.status(400).json({
           message: `The following fields are required and missing or wrong: ${missingFields.join(', ')}`
       });
+      return;
   }
 
   // check for duplicate email in the db
   const duplicate = await findEmail(newResident.email);
   console.log(duplicate);
   if (duplicate && duplicate.length>0) {
-    return res.status(409).json({ message: 'Email already registered. Choose another email.' })
+    res.status(409).json({ message: 'Email already registered. Choose another email.' })
+    return;
   }; //Conflict 
   
   try {

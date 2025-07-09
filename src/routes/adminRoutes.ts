@@ -19,7 +19,7 @@ const { saltRound } = require('../config/saltRound')
 const router = Router();
 
 //----------------------------a POST request to approve user------------------------------------------------
-router.post('/approveUser', async (req: Request, res: Response): Promise<void> => {
+router.post('/approveUser', async (req: Request, res: Response) => {
   const { userId, approvedBy } = req.body;
 
   //check if id existe
@@ -139,7 +139,7 @@ router.put('/updateMaintenance/:id', async (req: Request, res: Response): Promis
   const updateData = req.body as MaintenanceUpdateInput;
 
   if (!id || id !== updateData.id) {
-    return res.status(400).json({ message: 'Maintenance ID is missing or does not match URL.' });
+    res.status(400).json({ message: 'Maintenance ID is missing or does not match URL.' });
   }
 
  // Validate required fields
