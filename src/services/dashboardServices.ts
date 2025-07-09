@@ -43,11 +43,11 @@ export const findBuildings = async (buildingId: number) => {
 
 export const findBlocks = async (buildingId: number) => {
   const result = await prisma.blocks.findMany({
-    where: { buildingId: buildingId },
+    where: { building_Id: buildingId },
     select: {
       id: true,
       name: true,
-      buildingId: true
+      building_Id: true
     },
   });
   return result;

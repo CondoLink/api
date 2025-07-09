@@ -48,7 +48,7 @@ export async function addSub(newSub: NewSubcontractor) {
 interface MaintenanceInput {
   task: string;
   buildingId: number;
-  blockId: number;
+  blockId: number | null;
   subcontractor?: number | null;
   category: number;
   status: string;

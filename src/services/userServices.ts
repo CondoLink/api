@@ -20,7 +20,7 @@ export const findEmail = async (email: string): Promise<Email | null> => {
 //--------------------------------------------------------------------------------------
 
 export const findUserByEmail = async (email: string) => {
-  const result = await prisma.User.findUnique({
+  const result = await prisma.user.findUnique({
     where: { email: email }
   });
   return result;
