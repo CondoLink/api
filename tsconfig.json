@@ -27,5 +27,13 @@
     /* Your output and root dirs */
     "outDir": "./dist",
     "rootDir": "./src"
-  }
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/generated/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }
