@@ -48,7 +48,7 @@ export async function addSub(newSub: NewSubcontractor) {
 interface MaintenanceInput {
   task: string;
   buildingId: number;
-  blockId: number | null;
+  blockId?: number | null;
   subcontractor?: number | null;
   category: number;
   status: string;
@@ -61,7 +61,7 @@ export async function addMaintenance(newTask: MaintenanceInput) {
     data: {
       task: newTask.task,
       buildingId: newTask.buildingId,
-      blockId: newTask.blockId != null ? Number(newTask.blockId) : null,
+      blockId: newTask.blockId != null ? Number(newTask.blockId) : undefined,
       subcontractor: newTask.subcontractor ? Number(newTask.subcontractor) : null,
       category: Number(newTask.category),
       status: newTask.status,
@@ -81,7 +81,7 @@ export async function updateMaintenance(id: number, data: MaintenanceInput) {
     data: {
       task: data.task,
       buildingId: data.buildingId,
-      blockId: data.blockId != null ? Number(data.blockId) : null,
+      blockId: data.blockId != null ? Number(data.blockId) : undefined,
       subcontractor: data.subcontractor ? Number(data.subcontractor) : null,
       category: Number(data.category),
       status: data.status,
