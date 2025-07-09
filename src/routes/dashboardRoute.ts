@@ -28,7 +28,7 @@ interface Building {
 interface Block {
   id: number;
   name: string;
-  building_Id: number;
+  buildingId: number;
 }
 
 interface Service {

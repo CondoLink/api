@@ -26,7 +26,7 @@ interface NewSubcontractor {
   serviceType: number;
 }
 
-export async function addSub(newSub: NewSubcontractor): Promise<Resident> {
+export async function addSub(newSub: NewSubcontractor) {
   const created = await prisma.user.create({
     data: {
       fullName: newSub.fullName,
@@ -61,7 +61,7 @@ export async function addMaintenance(newTask: MaintenanceInput) {
     data: {
       task: newTask.task,
       buildingId: newTask.buildingId,
-      blockId: Number(newTask.blockId),  // Ensure number here
+      blockId: newTask.blockId != null ? Number(newTask.blockId) : null,
       subcontractor: newTask.subcontractor ? Number(newTask.subcontractor) : null,
       category: Number(newTask.category),
       status: newTask.status,
@@ -81,7 +81,7 @@ export async function updateMaintenance(id: number, data: MaintenanceInput) {
     data: {
       task: data.task,
       buildingId: data.buildingId,
-      blockId: Number(data.blockId)?? null,
+      blockId: data.blockId != null ? Number(data.blockId) : null,
       subcontractor: data.subcontractor ? Number(data.subcontractor) : null,
       category: Number(data.category),
       status: data.status,

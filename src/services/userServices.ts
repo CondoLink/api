@@ -37,7 +37,7 @@ interface Resident {
     unit: string;
 }
 
-export const createUser = async (newResident: Resident): Promise<Resident> => {
+export const createUser = async (newResident: Resident) => {
   const created = await prisma.user.create({
     data: {
       fullName: newResident.fullName,
