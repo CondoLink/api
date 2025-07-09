@@ -56,13 +56,18 @@ interface MaintenanceInput {
   dueTo: string; // ISO date string
 }
 
-export async function addMaintenance(newTask: MaintenanceInput) {
+export async function addMaintenance(newTask: MaintenanceInput) {  
+
+if (newTask.blockId == null) {
+    throw new Error('blockId is required');
+  }
+
   const created = await prisma.maintenance.create({
     data: {
       task: newTask.task,
       buildingId: newTask.buildingId,
-      blockId: newTask.blockId != null ? Number(newTask.blockId) : undefined,
-      subcontractor: newTask.subcontractor ? Number(newTask.subcontractor) : null,
+      blockId: Number(newTask.blockId),
+      subcontractor: newTask.subcontractor != null ? Number(newTask.subcontractor) : undefined,
       category: Number(newTask.category),
       status: newTask.status,
       comment: newTask.comment ?? null,
@@ -81,13 +86,12 @@ export async function updateMaintenance(id: number, data: MaintenanceInput) {
     data: {
       task: data.task,
       buildingId: data.buildingId,
-      blockId: data.blockId != null ? Number(data.blockId) : undefined,
-      subcontractor: data.subcontractor ? Number(data.subcontractor) : null,
+      ...(data.blockId != null && { blockId: Number(data.blockId) }),
+      ...(data.subcontractor != null ? { subcontractor: Number(data.subcontractor) } : { subcontractor: undefined }),
       category: Number(data.category),
       status: data.status,
       comment: data.comment ?? null,
       dueTo: new Date(data.dueTo),
-      // optionally update updated_at here if you have such a field
     },
   });
 
