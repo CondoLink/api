@@ -63,7 +63,7 @@ export const getMaintenance = async (buildingId: number) => {
 //--------------------------------------------------------------------------------------
 
 export const getServices = async () => {
-  const result = await prisma.ServiceCategory.findMany();
+  const result = await prisma.serviceCategory.findMany();
   return result;
 };
 

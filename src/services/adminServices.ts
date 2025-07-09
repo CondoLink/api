@@ -27,7 +27,7 @@ interface NewSubcontractor {
 }
 
 export async function addSub(newSub: NewSubcontractor): Promise<Resident> {
-  const created = await prisma.User.create({
+  const created = await prisma.user.create({
     data: {
       fullName: newSub.fullName,
       companyName: newSub.companyName,

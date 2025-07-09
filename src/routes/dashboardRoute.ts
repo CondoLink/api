@@ -8,7 +8,7 @@ interface User {
   id: number;
   fullName: string;
   email: string;
-  unit: string;
+  unit: string | null;
   roleCode: number;
   companyName: string | null;
   serviceType: number | null;
@@ -28,7 +28,7 @@ interface Building {
 interface Block {
   id: number;
   name: string;
-  buildingId: number;
+  building_Id: number;
 }
 
 interface Service {
@@ -45,8 +45,8 @@ interface Maintenance {
   category: number;
   status: string;
   comment: string | null;
-  created_at: string;
-  dueTo: string;
+  created_at: Date;
+  dueTo: Date;
 }
 
 interface DashboardData {
